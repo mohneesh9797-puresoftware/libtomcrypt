@@ -53,7 +53,7 @@ int omac_init(omac_state *omac, int cipher, const unsigned char *key, unsigned l
        default: return CRYPT_INVALID_ARG;
    }
 
-   if ((err = cipher_descriptor[cipher].setup(key, keylen, 0, &omac->key)) != CRYPT_OK) {
+   if ((err = ecb_start(cipher, key, keylen, 0, &omac->key)) != CRYPT_OK) {
       return err;
    }
 
@@ -61,7 +61,7 @@ int omac_init(omac_state *omac, int cipher, const unsigned char *key, unsigned l
 
    /* first calc L which is Ek(0) */
    zeromem(omac->Lu[0], cipher_descriptor[cipher].block_length);
-   if ((err = cipher_descriptor[cipher].ecb_encrypt(omac->Lu[0], omac->Lu[0], &omac->key)) != CRYPT_OK) {
+   if ((err = ecb_encrypt_block(omac->Lu[0], omac->Lu[0], &omac->key)) != CRYPT_OK) {
       return err;
    }
 
@@ -83,7 +83,6 @@ int omac_init(omac_state *omac, int cipher, const unsigned char *key, unsigned l
    }
 
    /* setup state */
-   omac->cipher_idx = cipher;
    omac->buflen     = 0;
    omac->blklen     = len;
    zeromem(omac->prev,  sizeof(omac->prev));
