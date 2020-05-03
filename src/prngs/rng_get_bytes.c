@@ -16,7 +16,7 @@
 
 #if defined(LTC_DEVRANDOM) && !defined(_WIN32)
 /* on *NIX read /dev/random */
-static unsigned long _rng_nix(unsigned char *buf, unsigned long len,
+static unsigned long s_rng_nix(unsigned char *buf, unsigned long len,
                              void (*callback)(void))
 {
 #ifdef LTC_NO_FILE
@@ -59,7 +59,7 @@ static unsigned long _rng_nix(unsigned char *buf, unsigned long len,
 
 #define ANSI_RNG
 
-static unsigned long _rng_ansic(unsigned char *buf, unsigned long len,
+static unsigned long s_rng_ansic(unsigned char *buf, unsigned long len,
                                void (*callback)(void))
 {
    clock_t t1;
@@ -100,7 +100,7 @@ static unsigned long _rng_ansic(unsigned char *buf, unsigned long len,
 #include <windows.h>
 #include <wincrypt.h>
 
-static unsigned long _rng_win32(unsigned char *buf, unsigned long len,
+static unsigned long s_rng_win32(unsigned char *buf, unsigned long len,
                                void (*callback)(void))
 {
    HCRYPTPROV hProv = 0;
@@ -146,12 +146,12 @@ unsigned long rng_get_bytes(unsigned char *out, unsigned long outlen,
 #endif
 
 #if defined(_WIN32) || defined(_WIN32_WCE)
-   x = _rng_win32(out, outlen, callback); if (x != 0) { return x; }
+   x = s_rng_win32(out, outlen, callback); if (x != 0) { return x; }
 #elif defined(LTC_DEVRANDOM)
-   x = _rng_nix(out, outlen, callback);   if (x != 0) { return x; }
+   x = s_rng_nix(out, outlen, callback);   if (x != 0) { return x; }
 #endif
 #ifdef ANSI_RNG
-   x = _rng_ansic(out, outlen, callback); if (x != 0) { return x; }
+   x = s_rng_ansic(out, outlen, callback); if (x != 0) { return x; }
 #endif
    return 0;
 }

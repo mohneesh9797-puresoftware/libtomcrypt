@@ -15,7 +15,7 @@
 
 #ifdef LTC_DER
 
-static int _new_element(ltc_asn1_list **l)
+static int s_new_element(ltc_asn1_list **l)
 {
    /* alloc new link */
    if (*l == NULL) {
@@ -56,7 +56,7 @@ int der_decode_sequence_flexi(const unsigned char *in, unsigned long *inlen, ltc
 
    if (*inlen == 0) {
       /* alloc new link */
-      if ((err = _new_element(&l)) != CRYPT_OK) {
+      if ((err = s_new_element(&l)) != CRYPT_OK) {
          goto error;
       }
    }
@@ -64,7 +64,7 @@ int der_decode_sequence_flexi(const unsigned char *in, unsigned long *inlen, ltc
    /* scan the input and and get lengths and what not */
    while (*inlen) {
       /* alloc new link */
-      if ((err = _new_element(&l)) != CRYPT_OK) {
+      if ((err = s_new_element(&l)) != CRYPT_OK) {
          goto error;
       }
 

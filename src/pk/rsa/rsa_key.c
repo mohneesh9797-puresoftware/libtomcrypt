@@ -17,7 +17,7 @@
 #ifdef LTC_MRSA
 #include <stdarg.h>
 
-static void _mpi_shrink_multi(void **a, ...)
+static void s_mpi_shrink_multi(void **a, ...)
 {
    void **cur;
    unsigned n;
@@ -82,7 +82,7 @@ out:
 void rsa_shrink_key(rsa_key *key)
 {
    LTC_ARGCHKVD(key != NULL);
-   _mpi_shrink_multi(&key->e, &key->d, &key->N, &key->dQ, &key->dP, &key->qP, &key->p, &key->q, NULL);
+   s_mpi_shrink_multi(&key->e, &key->d, &key->N, &key->dQ, &key->dP, &key->qP, &key->p, &key->q, NULL);
 }
 
 /**
