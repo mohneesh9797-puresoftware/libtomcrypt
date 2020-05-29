@@ -1,6 +1,8 @@
 dist: bionic
 sudo: required
-
+arch:
+    - amd64
+    - arm64
 language: c
 
 before_install:
